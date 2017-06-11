@@ -2,11 +2,14 @@ import Expo from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import words from './data/words.json';
+import WordList from './src/WordList';
+
 class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up your_mother.js to start working on your app!</Text>
+        <WordList words={words} />
       </View>
     );
   }
@@ -15,10 +18,8 @@ class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    marginTop: 60
+  }
 });
 
 Expo.registerRootComponent(App);
