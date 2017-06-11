@@ -3,6 +3,8 @@ import { Animated, Dimensions, PanResponder, View } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.5;
+const SWIPE_OUT_DURATION = 200;
+const SWIPE = { RIGHT: 'right', LEFT: 'left' };
 
 class Deck extends Component {
   constructor(props) {
@@ -15,16 +17,12 @@ class Deck extends Component {
       onPanResponderMove: (event, { dx }) => this.position.setValue({ x: dx }),
       onPanResponderRelease: (event, { dx }) => {
         if (dx >= SWIPE_THRESHOLD) {
-          // swipe right
-          return;
+          this.forceSwipe(SWIPE.RIGHT);
+        } else if (dx <= -SWIPE_THRESHOLD) {
+          this.forceSwipe(SWIPE.LEFT);
+        } else {
+          this.resetPosition();
         }
-
-        if (dx <= -SWIPE_THRESHOLD) {
-          // swipe left
-          return;
-        }
-
-        this.resetPosition();
       }
     });
   }
@@ -43,12 +41,24 @@ class Deck extends Component {
     };
   }
 
+  forceSwipe(direction) {
+    if (direction !== SWIPE.LEFT && direction !== SWIPE.RIGHT) {
+      throw new Error('invalid swipe direction');
+    }
+
+    const x =  direction === SWIPE.RIGHT ? SCREEN_WIDTH : -SCREEN_WIDTH;
+
+    Animated.timing(this.position, {
+      toValue: { x, y: 0 },
+      duration: SWIPE_OUT_DURATION
+    }).start();
+  }
+
   resetPosition() {
     Animated.spring(this.position, {
         toValue: { x: 0, y: 0 }
     }).start();
   }
-
 
   renderCard(item, index) {
     return index === 0 ?
@@ -66,14 +76,10 @@ class Deck extends Component {
     );
   }
 
-  renderCards() {
-    return this.props.data.map(this.renderCard.bind(this));
-  }
-
 	render() {
 		return (
       <View>
-        {this.renderCards()}
+        {this.props.data.map(this.renderCard.bind(this))}
       </View>
 		);
 	}
