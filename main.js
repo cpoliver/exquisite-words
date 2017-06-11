@@ -1,12 +1,14 @@
 import Expo from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import Ball from './src/Ball';
 
 class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up your_mother.js to start working on your app!</Text>
+        <Ball />
       </View>
     );
   }
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
 });
 
