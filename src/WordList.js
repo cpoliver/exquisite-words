@@ -5,6 +5,11 @@ import { StyleSheet, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { head } from 'ramda';
 
+type WordType = {
+  word: String,
+  definitions: String[]
+}
+
 const renderSubtitle = definitions => (
   <Text numberOfLines={1} style={styles.subtitle}>
     {head(definitions)}
@@ -21,7 +26,7 @@ const renderListItem = ({ word, definitions }) => (
   />
 );
 
-const WordList = ({ words }) => (
+const WordList = ({ words } : { words: WordType[] }) => (
   <List style={{ flex: 1 }}>
     {words.map(renderListItem)}
   </List>
