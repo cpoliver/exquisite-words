@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Animated, PanResponder, View } from 'react-native';
+import { Animated, Dimensions, PanResponder, View } from 'react-native';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.5;
 
 class Deck extends Component {
   constructor(props) {
@@ -10,7 +13,19 @@ class Deck extends Component {
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event, { dx }) => this.position.setValue({ x: dx }),
-      onPanResponderRelease: () => {}
+      onPanResponderRelease: (event, { dx }) => {
+        if (dx >= SWIPE_THRESHOLD) {
+          // swipe right
+          return;
+        }
+
+        if (dx <= -SWIPE_THRESHOLD) {
+          // swipe left
+          return;
+        }
+
+        this.resetPosition();
+      }
     });
   }
 
@@ -18,7 +33,7 @@ class Deck extends Component {
     const { position } = this;
 
     const rotate = position.x.interpolate({
-      inputRange: [-500, 0, 500],
+      inputRange: [-SCREEN_WIDTH * 1.5, 0, SCREEN_WIDTH * 1.5],
       outputRange: ['-120deg', '0deg', '120deg']
     });
 
@@ -27,6 +42,13 @@ class Deck extends Component {
       transform: [{ rotate }]
     };
   }
+
+  resetPosition() {
+    Animated.spring(this.position, {
+        toValue: { x: 0, y: 0 }
+    }).start();
+  }
+
 
   renderCard(item, index) {
     return index === 0 ?
