@@ -9,11 +9,23 @@ class Deck extends Component {
 
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (event, { dx, dy }) => {
-        this.position.setValue({ x: dx, y: dy });
-      },
+      onPanResponderMove: (event, { dx }) => this.position.setValue({ x: dx }),
       onPanResponderRelease: () => {}
     });
+  }
+
+  getCardStyle() {
+    const { position } = this;
+
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ['-120deg', '0deg', '120deg']
+    });
+
+    return {
+      ...position.getLayout(),
+      transform: [{ rotate }]
+    };
   }
 
   renderCard(item, index) {
@@ -23,8 +35,10 @@ class Deck extends Component {
   }
 
   renderFirstCard(item) {
+    const { panHandlers } = this.panResponder;
+
     return (
-      <Animated.View key={item.id} style={this.position.getLayout()} {...this.panResponder.panHandlers}>
+      <Animated.View {...panHandlers} key={item.id} style={this.getCardStyle()}>
         {this.props.renderCard(item)}
       </Animated.View>
     );
