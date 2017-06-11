@@ -1,6 +1,7 @@
 import Expo from 'expo';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Card } from 'react-native-elements';
 
 import Deck from './src/Deck';
 
@@ -16,9 +17,13 @@ const DATA = [
 ];
 
 class App extends React.Component {
-  renderCard(item) {
+  renderCard({ id, text, uri }) {
     return (
-      <Text>{item.text}</Text>
+      <Card key={id} title={text} image={{ uri }}>
+        <Text style={{ marginBottom: 10 }}>
+          I can customize the card further.
+        </Text>
+      </Card>
     );
   }
 
