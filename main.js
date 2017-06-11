@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import words from './data/words.json';
 import WordList from './src/WordList';

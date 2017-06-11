@@ -1,6 +1,7 @@
 /* @flow */
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { StyleSheet, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { head } from 'ramda';
 
@@ -10,7 +11,8 @@ const renderSubtitle = definitions => (
   </Text>
 );
 
-const renderListItem = ({ word, type, definitions }) => (
+// eslint-disable-next-line react/prop-types
+const renderListItem = ({ word, definitions }) => (
   <ListItem
     key={word}
     title={word}
@@ -30,5 +32,13 @@ const styles = StyleSheet.create({
     color: '#aaa'
   }
 });
+
+WordList.propTypes = {
+  words: PropTypes.arrayOf(PropTypes.shape({
+    word: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    definitions: PropTypes.arrayOf(PropTypes.string).isRequired
+  })).isRequired
+};
 
 export default WordList;

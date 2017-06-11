@@ -5,6 +5,38 @@
   "author": null,
   "private": true,
   "main": "main.js",
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "jest": true,
+      "node": true
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ]
+    }
+  },
+  "scripts": {
+    "flow": "./node_modules/.bin/flow",
+    "lint": "./node_modules/.bin/eslint .",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "dependencies": {
     "axios": "^0.16.2",
     "expo": "17.0.0",
@@ -16,6 +48,11 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.47.0"
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.1",
+    "flow-bin": "^0.47.0",
+    "husky": "^0.13.4",
+    "lint-staged": "^3.6.1"
   }
 }
