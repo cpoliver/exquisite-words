@@ -16,17 +16,29 @@ class Deck extends Component {
     });
   }
 
-  renderCards() {
-    const { data, renderCard } = this.props;
+  renderCard(item, index) {
+    return index === 0 ?
+      this.renderFirstCard(item) :
+      this.props.renderCard(item, index);
+  }
 
-    return data.map(renderCard);
+  renderFirstCard(item) {
+    return (
+      <Animated.View key={item.id} style={this.position.getLayout()} {...this.panResponder.panHandlers}>
+        {this.props.renderCard(item)}
+      </Animated.View>
+    );
+  }
+
+  renderCards() {
+    return this.props.data.map(this.renderCard.bind(this));
   }
 
 	render() {
 		return (
-      <Animated.View style={this.position.getLayout()} {...this.panResponder.panHandlers}>
+      <View>
         {this.renderCards()}
-      </Animated.View>
+      </View>
 		);
 	}
 }
